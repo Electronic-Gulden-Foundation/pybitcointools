@@ -4,14 +4,14 @@ try:
 except ImportError:
     from distutils.core import setup
 
-setup(name='bitcoin',
+setup(name='egulden',
       version='2.6.11',
-      description='Python Bitcoin Tools',
+      description='Python Egulden Tools',
       author='simcity fork of Vitalik Buterin',
       author_email='vbuterin@gmail.com',
-      url='http://github.com/simcity4242/pybitcointools',
-      packages=['bitcoin'],
-      scripts=['pybtctool'],
+      url='https://github.com/Electronic-Gulden-Foundation/pybitcointools',
+      packages=['egulden'],
+      scripts=['pyefltool'],
       include_package_data=True,
       data_files=[("", ["LICENSE"])],
       )
