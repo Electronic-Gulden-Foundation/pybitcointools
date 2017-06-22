@@ -1,5 +1,5 @@
-from bitcoin.main import *
-#import bitcoin.transaction as tx
+from egulden.main import *
+#import egulden.transaction as tx
 
 # Shared secrets and uncovering pay keys
 

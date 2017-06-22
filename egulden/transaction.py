@@ -1,9 +1,9 @@
 #!/usr/bin/python
 import binascii, re, json, sys, binascii
-from bitcoin.main import *
+from egulden.main import *
 from _functools import reduce
-from bitcoin.pyspecials import *
-from bitcoin.bci import fetchtx
+from egulden.pyspecials import *
+from egulden.bci import fetchtx
 
 
 # Transaction serialization and deserialization
@@ -521,7 +521,7 @@ def mksend(*args, **kwargs):
 # append 'ins' or 'outs' to args: args = "txid:0", 'ins'
 def get_script(*args, **kwargs):
     """Extract scripts from txhex; specify 'ins' or 'outs', otherwise default is both"""
-    from bitcoin.bci import set_network
+    from egulden.bci import set_network
     if len(args) > 1 and args[-1] in ("ins", "outs", "both"):
         source = args[-1]
         args = args[:-1]

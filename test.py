@@ -4,8 +4,8 @@ import random
 import unittest
 import string
 
-import bitcoin.ripemd as ripemd
-from bitcoin import *
+import egulden.ripemd as ripemd
+from egulden import *
 
 
 class TestECCArithmetic(unittest.TestCase):

@@ -1,9 +1,9 @@
-from bitcoin.pyspecials import *
-from bitcoin.main import *
-from bitcoin.deterministic import *
-from bitcoin.bci import *
-from bitcoin.transaction import *
-from bitcoin.composite import *
+from egulden.pyspecials import *
+from egulden.main import *
+from egulden.deterministic import *
+from egulden.bci import *
+from egulden.transaction import *
+from egulden.composite import *
 
 import re, hmac, hashlib
 try:
@@ -152,7 +152,7 @@ def bip47_mk_notification_tx(a, outpoint, paycodeB):
 def bip47_check_address(addr, index=0):
     """Checks notification address at decreasing indexes for payments, 
     returns [{"txid:vout": "6a4c5001..."}]"""
-    #from bitcoin.transaction import get_script
+    #from egulden.transaction import get_script
     un = unspent(addr)[int(index) : 1+int(index)]
     outpoints = access(un, "output")[int(index)]
     txids = map(lambda s: str(s[:64]), outpoints)

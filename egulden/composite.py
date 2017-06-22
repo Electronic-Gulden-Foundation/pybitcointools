@@ -1,8 +1,8 @@
-from bitcoin.main import *
-from bitcoin.transaction import *
-from bitcoin.bci import *
-from bitcoin.deterministic import *
-from bitcoin.blocks import *
+from egulden.main import *
+from egulden.transaction import *
+from egulden.bci import *
+from egulden.deterministic import *
+from egulden.blocks import *
 
 
 # Takes privkey, address, value (satoshis), fee (satoshis)

@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from bitcoin.pyspecials import *
+from egulden.pyspecials import *
 import binascii
 import hashlib
 import re
@@ -7,12 +7,12 @@ import base64
 import time
 import random
 import hmac
-from bitcoin.ripemd import *
+from egulden.ripemd import *
 
 is_python2 = str == bytes
 
 if "ripemd160" not in (hashlib.algorithms if is_python2 else hashlib.algorithms_available):
-    from bitcoin import ripemd
+    from egulden import ripemd
     setattr(hashlib, 'ripemd160', ripemd.RIPEMD160)
 
 
@@ -165,7 +165,7 @@ def fast_add(a, b):
 def get_pubkey_format(pub):
     if is_python2:    two = '\2'; three = '\3'; four = '\4'
     else:             two = 2; three = 3; four = 4
-    
+
     if isinstance(pub, (tuple, list)):                  return 'decimal'
     elif len(pub) == 65 and pub[0] == four:             return 'bin'
     elif len(pub) == 130 and pub[0:2] == '04':          return 'hex'
@@ -179,14 +179,14 @@ def get_pubkey_format(pub):
 def encode_pubkey(pub, formt):
     if not isinstance(pub, (tuple, list)):
         pub = decode_pubkey(pub)
-    if formt == 'decimal': 
+    if formt == 'decimal':
         return pub
-    elif formt == 'bin': 
+    elif formt == 'bin':
         return b'\x04' + encode(pub[0], 256, 32) + encode(pub[1], 256, 32)
-    elif formt == 'bin_compressed': 
+    elif formt == 'bin_compressed':
         return from_int_to_byte(2+(pub[1] % 2)) + encode(pub[0], 256, 32)
     elif formt == 'hex': return '04' + encode(pub[0], 16, 64) + encode(pub[1], 16, 64)
-    elif formt == 'hex_compressed': 
+    elif formt == 'hex_compressed':
         return '0'+str(2+(pub[1] % 2)) + encode(pub[0], 16, 64)
     elif formt == 'bin_electrum': return encode(pub[0], 256, 32) + encode(pub[1], 256, 32)
     elif formt == 'hex_electrum': return encode(pub[0], 16, 64) + encode(pub[1], 16, 64)
@@ -195,11 +195,11 @@ def encode_pubkey(pub, formt):
 
 def decode_pubkey(pub, formt=None):
     """takes pubkey, detects type, returns tuple of (x, y)"""
-    if not formt: 
+    if not formt:
         formt = get_pubkey_format(pub)
-    if formt == 'decimal': 
+    if formt == 'decimal':
         return pub
-    elif formt == 'bin': 
+    elif formt == 'bin':
         return decode(pub[1:33], 256), decode(pub[33:65], 256)
     elif formt == 'bin_compressed':
         x = decode(pub[1:33], 256)
@@ -270,7 +270,7 @@ def decode_privkey(priv,formt=None):
 
 def convert_privkey(priv, to_format=None):
     from_format = get_privkey_format(priv)
-    is_compressed = "compressed" in from_format 
+    is_compressed = "compressed" in from_format
     if to_format is None:
         to_format = "hex_compressed" if is_compressed else "hex"
     elif "wif" in to_format:
@@ -317,9 +317,9 @@ def pubkey_to_privkey_verify(pubkey, privkey):
 
 def compress(pubkey):
     f = get_pubkey_format(pubkey)
-    if 'compressed' in f: 
+    if 'compressed' in f:
         return pubkey
-    elif f == 'bin': 
+    elif f == 'bin':
         return encode_pubkey(decode_pubkey(pubkey, f), 'bin_compressed')
     elif f == 'hex' or f == 'decimal':
         return encode_pubkey(decode_pubkey(pubkey, f), 'hex_compressed')
@@ -327,9 +327,9 @@ def compress(pubkey):
 
 def decompress(pubkey):
     f = get_pubkey_format(pubkey)
-    if 'compressed' not in f: 
+    if 'compressed' not in f:
         return pubkey
-    elif f == 'bin_compressed': 
+    elif f == 'bin_compressed':
         return encode_pubkey(decode_pubkey(pubkey, f), 'bin')
     elif f == 'hex_compressed' or f == 'decimal':
         return encode_pubkey(decode_pubkey(pubkey, f), 'hex')
@@ -346,11 +346,11 @@ def privkey_to_pubkey(privkey):
         return encode_pubkey(fast_multiply(G, privkey), f.replace('wif', 'hex'))
 
 privtopub = privkey_to_pubkey
-    
+
 
 def privkey_to_address(priv, magicbyte=0):
     return pubkey_to_address(privkey_to_pubkey(priv), int(magicbyte))
-    
+
 privtoaddr = privkey_to_address
 
 
@@ -402,7 +402,7 @@ def is_pubkey(pubkey):
         return False
     finally:
         return True
- 
+
 
 def is_address(addr):
     return bool(RE_ADDR.match(addr))
@@ -484,19 +484,19 @@ def num_to_var_int(x):
 
 def num_to_op_push(x):
     x = int(x)
-    if 0 <= x <= 75:              
+    if 0 <= x <= 75:
         pc = ''
         num = encode(x, 256, 1)
-    elif x < 0xff:          
+    elif x < 0xff:
         pc = from_int_to_byte(0x4c)
         num = encode(x, 256, 1)
-    elif x < 0xffff:        
+    elif x < 0xffff:
         pc = from_int_to_byte(0x4d)
         num = encode(x, 256, 2)[::-1]
     elif x < 0xffffffff:
         pc = from_int_to_byte(0x4e)
         num = encode(x, 256, 4)[::-1]
-    else: 
+    else:
         raise ValueError("0xffffffff > value >= 0")
     return pc + num
 
@@ -515,7 +515,7 @@ def wrap_script(hexdata):
 
 # WTF, Electrum?
 def electrum_sig_hash(msg):
-    padded = b"\x18" + "Bitcoin Signed Message:\n" + \
+    padded = b"\x18" + "Egulden Signed Message:\n" + \
              num_to_var_int(len(msg)) + from_str_to_bytes(msg)
     return bin_dbl_sha256(padded)
 
@@ -537,9 +537,9 @@ def random_mini_key():
     while True:
         randstr = ''.join([random.choice(charset) for i in xrange(29)])
         key = "S{0}?".format(randstr)
-        if ord(bin_sha256(key)[0]) != 0: 
+        if ord(bin_sha256(key)[0]) != 0:
             continue
-        if ord(bin_sha256(key)[0]) == 0: 
+        if ord(bin_sha256(key)[0]) == 0:
             break
     return key[:-1]
 
@@ -594,8 +594,8 @@ def decode_sig(sig):
 # https://tools.ietf.org/html/rfc6979#section-3.2
 def deterministic_generate_k(msghash, priv):
     hmac_sha256 = lambda k, s: hmac.new(k, s, hashlib.sha256)
-    v = bytearray(b'\1' * 32)	            
-    k = bytearray(32)          #b'\0' * 32 		
+    v = bytearray(b'\1' * 32)
+    k = bytearray(32)          #b'\0' * 32
     priv = encode_privkey(priv, 'bin')					# binary private key
     msghash = encode(hash_to_int(msghash), 256, 32)		# encode msg hash as 32 bytes
     k = hmac_sha256(k, v + b'\0' + priv + msghash).digest()
@@ -636,7 +636,7 @@ def ecdsa_sign(msg, priv):
     assert ecdsa_verify(msg, sig, privtopub(priv)), \
          "Bad Sig!\t %s\nv,r,s = %d,\n%d\n%d" % (sig, v,r,s)
     return sig
-    
+
 
 def ecdsa_raw_verify(msghash, vrs, pub):
     """Verifies signature against pubkey for digest hash (msghash)"""
@@ -757,13 +757,13 @@ def format_output(num, output_type):
 # amount, label, message, request
 def uri_encode(addr, amount=None, label=None, message=None):
     #bitcoin:1NS17iag9jJgTHD1VXjvLCEnZuQ3rJED9L?amount=20.3&label=Luke-Jr&message=Donation%20for%20project%20xyz
-    try:     
+    try:
         from urllib.parse import urlencode  # Python 3
-    except:  
+    except:
         from urllib import urlencode        # Python 2
     base_uri = "bitcoin:{address}?{params}"
     params = urlencode([
-                        ("amount", str(satoshi_to_btc(int(amount)))), 
+                        ("amount", str(satoshi_to_btc(int(amount)))),
                         ("label", label),
                         ("message", message)
                        ])

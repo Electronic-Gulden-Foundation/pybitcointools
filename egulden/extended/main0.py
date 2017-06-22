@@ -186,7 +186,7 @@ def get_pubkey_format(pub):
         two = 2
         three = 3
         four = 4
-    
+
     if isinstance(pub, (tuple, list)): return 'decimal'
     elif len(pub) == 65 and pub[0] == four: return 'bin'
     elif len(pub) == 130 and pub[0:2] == '04': return 'hex'
@@ -202,10 +202,10 @@ def encode_pubkey(pub, formt):
         pub = decode_pubkey(pub)
     if formt == 'decimal': return pub
     elif formt == 'bin': return b'\x04' + encode(pub[0], 256, 32) + encode(pub[1], 256, 32)
-    elif formt == 'bin_compressed': 
+    elif formt == 'bin_compressed':
         return from_int_to_byte(2+(pub[1] % 2)) + encode(pub[0], 256, 32)
     elif formt == 'hex': return '04' + encode(pub[0], 16, 64) + encode(pub[1], 16, 64)
-    elif formt == 'hex_compressed': 
+    elif formt == 'hex_compressed':
         return '0'+str(2+(pub[1] % 2)) + encode(pub[0], 16, 64)
     elif formt == 'bin_electrum': return encode(pub[0], 256, 32) + encode(pub[1], 256, 32)
     elif formt == 'hex_electrum': return encode(pub[0], 16, 64) + encode(pub[1], 16, 64)
@@ -421,7 +421,7 @@ def num_to_var_int(x):
 
 # WTF, Electrum?
 def electrum_sig_hash(message):
-    padded = b"\x18Bitcoin Signed Message:\n" + num_to_var_int(len(message)) + from_string_to_bytes(message)
+    padded = b"\x18Egulden Signed Message:\n" + num_to_var_int(len(message)) + from_string_to_bytes(message)
     return bin_dbl_sha256(padded)
 
 
@@ -478,7 +478,7 @@ pubtoaddr = pubkey_to_address
 
 def encode_sig(v, r, s):
     vb, rb, sb = from_int_to_byte(v), encode(r, 256), encode(s, 256)
-    
+
     result = base64.b64encode(vb+b'\x00'*(32-len(rb))+rb+b'\x00'*(32-len(sb))+sb)
     return result if is_python2 else str(result, 'utf-8')
 

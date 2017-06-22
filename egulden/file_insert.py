@@ -1,9 +1,9 @@
 import io, struct, os, sys, math
 from binascii import crc32, unhexlify, hexlify
-from bitcoin.main import *
-from bitcoin.bci import *
-from bitcoin.transaction import *
-#from bitcoin.pyspecials import hexify, unhexify, by
+from egulden.main import *
+from egulden.bci import *
+from egulden.transaction import *
+#from egulden.pyspecials import hexify, unhexify, by
 
 
 def _mk_multisig_scriptpubkey(fo):

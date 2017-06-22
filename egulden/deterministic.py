@@ -1,11 +1,11 @@
-from bitcoin.main import *
+from egulden.main import *
 import hmac
 import hashlib
 import re
 from binascii import hexlify
 from _functools import reduce
-from bitcoin.mnemonic import elec2_prepare_seed, is_elec1_seed, is_elec2_seed, bip39_check, bip39_to_seed
-from bitcoin.pyspecials import *
+from egulden.mnemonic import elec2_prepare_seed, is_elec1_seed, is_elec2_seed, bip39_check, bip39_to_seed
+from egulden.pyspecials import *
 
 # Electrum wallets
 def bin_electrum_extract_seed(mn_seed, password=b''):

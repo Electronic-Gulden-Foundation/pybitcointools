@@ -1,5 +1,5 @@
 #!/usr/bin/python2
-from bitcoin.pyspecials import *
+from egulden.pyspecials import *
 import json, re, binascii, datetime, random, sys
 
 try:    # Python 3
@@ -334,7 +334,7 @@ def history(*args):
     #         for tx in txs:
     #             tx.update(dict(address=addr))
     #     outs = {}
-    #     #from bitcoin.main import hex_to_b58check, btc_to_satoshi
+    #     #from egulden.main import hex_to_b58check, btc_to_satoshi
     #     for tx in txs:
     #         if o.get('address', None) in addrs:
     #             key = str(tx["confirmed"])+':'+str(o["tx_output_"])
@@ -519,8 +519,8 @@ def helloblock_fetchtx(txhash, network='btc'):
             "value": outp["value"],
             "script": outp["scriptPubKey"]
         })
-    from bitcoin.transaction import serialize
-    from bitcoin.transaction import txhash as TXHASH
+    from egulden.transaction import serialize
+    from egulden.transaction import txhash as TXHASH
     tx = serialize(o)
     assert TXHASH(tx) == txhash
     return tx
@@ -539,7 +539,7 @@ def blockcypher_fetchtx(txhash, network=''):
         raise Exception('Unsupported network {0} for blockcypher_fetchtx'.format(network))
     jdata = json.loads(make_request(url))
     txhex = jdata.get('hex')
-    from bitcoin.transaction import txhash as TXHASH
+    from egulden.transaction import txhash as TXHASH
     assert TXHASH(unhexlify(txhex)) == txhash
     return txhex.encode()
 
@@ -967,8 +967,8 @@ def get_chart(*args, **kwargs):
 
 def get_xpub_unspent_addrs(*args):
     """Takes bip32 xpub (or xprv) and returns addresses with balance"""
-    from bitcoin.main import multiaccess, pubtoaddr
-    from bitcoin.deterministic import bip32_descend, bip32_ckd, bip32_privtopub
+    from egulden.main import multiaccess, pubtoaddr
+    from egulden.deterministic import bip32_descend, bip32_ckd, bip32_privtopub
     xpubs = [bip32_privtopub(x) if x.startswith("xprv") else x for x in args]
     data = {"addr": " ".join(xpubs)}
     jdata = json.loads(make_request("https://www.blockonomics.co/api/balance", json.dumps(data)))
@@ -991,8 +991,8 @@ def get_xpub_unspent_addrs(*args):
 
 def get_xpub_addrs(*args):
     """Returns all known (used) addresses for xpub(s)"""
-    from bitcoin.main import multiaccess
-    from bitcoin.deterministic import bip32_privtopub
+    from egulden.main import multiaccess
+    from egulden.deterministic import bip32_privtopub
     xpubs = [bip32_privtopub(x) if x.startswith("xprv") else x for x in args]
     jdata = json.loads(make_request("https://www.blockonomics.co/api/balance", \
                                       json.dumps({"addr": " ".join(xpubs)}))).get("response")
@@ -1001,8 +1001,8 @@ def get_xpub_addrs(*args):
 
 
 def get_xpub_outputs(*args):
-    from bitcoin.main import multiaccess
-    from bitcoin.deterministic import bip32_privtopub
+    from egulden.main import multiaccess
+    from egulden.deterministic import bip32_privtopub
     xpubs = [bip32_privtopub(x) if x.startswith("xprv") else x for x in args]
     jdata = json.loads(make_request("https://www.blockonomics.co/api/balance", \
                                       json.dumps({"addr": " ".join(xpubs)}))).get("response")

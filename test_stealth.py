@@ -1,4 +1,4 @@
-import bitcoin as bc
+import egulden as bc
 import sys
 import unittest
 

@@ -1,13 +1,13 @@
 import unittest
 
-from bitcoin import *
-from bitcoin.transaction import serialize_script
+from egulden import *
+from egulden.transaction import serialize_script
 
-#from bitcoin.pyspecials import *
-#from bitcoin.transaction import *
-#from bitcoin.mnemonic import *
-#from bitcoin.deterministic import *
-#from bitcoin.utils import *
+#from egulden.pyspecials import *
+#from egulden.transaction import *
+#from egulden.mnemonic import *
+#from egulden.deterministic import *
+#from egulden.utils import *
 
 
 

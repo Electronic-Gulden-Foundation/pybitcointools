@@ -1,10 +1,10 @@
 #!/usr/bin/python
 import string, unicodedata, random, hmac, re, math
 
-from bitcoin.main import *
-from bitcoin.pyspecials import *
+from egulden.main import *
+from egulden.pyspecials import *
 try:
-    from bitcoin._wordlists import WORDS
+    from egulden._wordlists import WORDS
 except ImportError:
     WORDS={}
 
@@ -22,7 +22,7 @@ def get_filename(language='english'):
 def get_wordlists(lang=None):
     # Try to access local lists, otherwise download text lists
     # if any((listtype, lang)):
-    from bitcoin.bci import make_request
+    from egulden.bci import make_request
     global WORDS
     if 'electrum' in str(lang.lower()): 
         WORDS['electrum1'] = make_request("http://tinyurl.com/electrum1words").strip().split()

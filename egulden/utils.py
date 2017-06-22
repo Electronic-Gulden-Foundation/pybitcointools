@@ -1,10 +1,10 @@
 import re
 from pprint import pprint as pp
 from struct import pack
-from bitcoin.main import *
-from bitcoin.main import privtopub, privtoaddr, pubtoaddr
-from bitcoin.transaction import *
-from bitcoin.bci import *
+from egulden.main import *
+from egulden.main import privtopub, privtoaddr, pubtoaddr
+from egulden.transaction import *
+from egulden.bci import *
 
 
 

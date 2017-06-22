@@ -5,8 +5,8 @@ import unicodedata
 import binascii
 import re
 
-from bitcoin.main import *
-from bitcoin.pyspecials import *
+from egulden.main import *
+from egulden.pyspecials import *
 import pyscrypt
 
 

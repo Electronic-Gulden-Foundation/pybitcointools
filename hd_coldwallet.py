@@ -1,4 +1,4 @@
-import bitcoin
+import egulden
 import sys
 import argparse
 import json
